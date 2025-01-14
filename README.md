@@ -11,9 +11,9 @@ MotionMark1.2, Speedometer2.1) to compare four different Chrome configurations:
 * ***Direct Refs***: uses "regular" pointers to heap objects on the stack. The
   GC uses conservative scanning to identify pointers on the stack (enabled by
   the `v8_enable_conservative_stack_scanning=true` GN arg).
-* ***Handles (no compression)***: ***Handles**, but with pointer compression
+* ***Handles (no compression)***: ***Handles***, but with pointer compression
   disabled (`v8_enable_pointer_compression=false`).
-* ***Direct Refs (no compression)***: ***Direct Refs**, but with pointer
+* ***Direct Refs (no compression)***: ***Direct Refs***, but with pointer
   compression disabled (`v8_enable_pointer_compression=false`).
 
 All configurations are built using the same GN arguments:
