@@ -5,7 +5,7 @@ export PATH := $(PWD)/depot_tools:$(PATH)
 PWD != pwd
 CHR_SRC = $(PWD)/chromium/src
 CB = $(CHR_SRC)/third_party/crossbench/cb.py
-GN_REL_ARGS = is_debug=false dcheck_always_on=false is_component_build=true enable_nacl=true
+GN_REL_ARGS = is_debug=false dcheck_always_on=false is_component_build=true enable_nacl=false
 
 ifeq ($(USE_REMOTEEXEC),true)
 	GN_REL_ARGS := $(GN_REL_ARGS) use_remoteexec=true
