@@ -1,7 +1,32 @@
 # Experiment for V8 Handles Paper
 
-The repository for the paper can be found at
-https://github.com/softdevteam/v8_handles_paper.
+This is the experiment for the [V8 handles
+paper](https://github.com/sfotdevteam/v8_handles_paper). It uses the
+[BrowserBench](https://browserbench.org/) benchmarking suite (JetStream3,
+MotionMark1.2, Speedometer2.1) to compare four different Chrome configurations: 
+
+* ***Handles***: pointers to heap objects on the stack use indirection to
+  inform the collector of roots. The GC does not use conservative stack
+  scanning. (currently in use in production)
+* ***Direct Refs***: uses "regular" pointers to heap objects on the stack. The
+  GC uses conservative scanning to identify pointers on the stack (enabled by
+  the `v8_enable_conservative_stack_scanning=true` GN arg).
+* ***Handles (no compression)***: ***Handles**, but with pointer compression
+  disabled (`v8_enable_pointer_compression=false`).
+* ***Direct Refs (no compression)***: ***Direct Refs**, but with pointer
+  compression disabled (`v8_enable_pointer_compression=false`).
+
+All configurations are built using the same GN arguments:
+
+```
+dcheck_always_on=false
+is_debug=false
+enable_nacl=false
+is_component_build=false
+```
+
+For more information, the accompanying design document can be found
+[here](https://docs.google.com/document/d/1bOPW-Bb_aAefrgXGI8yhwEPxULePkLcNY8RaOvnbJKU/edit?tab=t.0#heading=h.wb0el8iqan2r).
 
 ## Running the experiments
 
