@@ -52,3 +52,9 @@ If you have access to Google's remoteexec build server, you can use set
 After the experiments have run, the results will be available in
 `chromium/src/third_party/crossbench/results`.
 
+## Results output
+
+Currently, this script outputs the results of each benchmark to a file
+containing a table formatted using Markdown. We'll want to change this at some
+point, but for now it can be easily modified by editing `process.py` to output
+the results in a format of your choosing.
