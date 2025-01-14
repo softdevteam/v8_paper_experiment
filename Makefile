@@ -59,19 +59,19 @@ $(CHR_SRC):
 
 handles: $(CHR_SRC)
 	cd $(CHR_SRC) && gn gen --args="$(HANDLES_ARGS)" out/$@
-	autoninja -C out/$@ chrome chromedriver
+	autoninja -C $(CHR_SRC)/out/$@ chrome chromedriver
 
 css: $(CHR_SRC)
 	cd $(CHR_SRC) && gn gen --args="$(CSS_ARGS)" out/$@
-	autoninja -C out/$@ chrome chromedriver
+	autoninja -C $(CHR_SRC)/out/$@ chrome chromedriver
 
 handles-no-compression: $(CHR_SRC)
 	cd $(CHR_SRC) && gn gen --args="$(HANDLES_NC_ARGS)" out/$@
-	autoninja -C out/$@ chrome chromedriver
+	autoninja -C $(CHR_SRC)/out/$@ chrome chromedriver
 
 css-no-compression: $(CHR_SRC)
 	cd $(CHR_SRC) && gn gen --args="$(CSS_NC_ARGS)" out/$@
-	autoninja -C out/$@ chrome chromedriver
+	autoninja -C $(CHR_SRC)/out/$@ chrome chromedriver
 
 clean-results:
 	rm -rf $(CHR_SRC)/third_party/crossbench/results
