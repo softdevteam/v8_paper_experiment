@@ -20,6 +20,7 @@ bench: $(BENCHMARKS)
 ifeq ($(USE_XVFB),true)
 XVFB_PID = $(PWD)/xvfb.pid
 $(BENCHMARKS):
+	- rm /tmp/.X99-lock
 	Xvfb :99 -ac -screen 0 1024x268x24 & echo $$! > $(XVFB_PID)
 	- DISPLAY=:99 $(CB) $@ --repeat=$(ITERS) \
 		$(foreach browser, $(CHROME_TARGETS), \
