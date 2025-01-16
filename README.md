@@ -34,7 +34,7 @@ To run the experiments on your local machine, you need to install dependencies
 for your Linux distribution listed in the [Chromium build
 instructions](https://chromium.googlesource.com/chromium/src/+/main/docs/linux/build_instructions.md#notes-for-other-distros).
 
-> [!INFO]
+> [!NOTE]
 > If you intend to benchmark on a machine without an X/Wayland display server,
 > you can set the `USE_XVFB=true` environment variable to ensure that Chrome is
 > run inside a virtual display. You will need to have `xvfb` installed to use this.
