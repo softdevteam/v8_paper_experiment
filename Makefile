@@ -5,7 +5,7 @@ export PATH := $(PWD)/depot_tools:$(PATH)
 
 PWD != pwd
 CHR_SRC = $(PWD)/chromium/src
-CB = $(CHR_SRC)/third_party/crossbench/cb.py
+RUNNER = $(CHR_SRC)/third_party/crossbench/cb.py
 
 CFGS = $(wildcard $(PWD)/configs/*.gn)
 NINJA_FILES := $(patsubst $(PWD)/configs/%.gn,$(CHR_SRC)/out/%/args.gn,$(CFGS))
@@ -15,23 +15,19 @@ BENCHMARKS = speedometer2.1 jetstream3.0 motionmark1.3
 .PHONY: build bench clean
 
 all: build bench
+
 bench: $(BENCHMARKS)
 
+build: $(NINJA_FILES) $(CHROME_TARGETS)
+
 ifeq ($(USE_XVFB),true)
-XVFB_PID = $(PWD)/xvfb.pid
-$(BENCHMARKS):
-	- rm /tmp/.X99-lock
-	Xvfb :99 -ac -screen 0 1024x268x24 & echo $$! > $(XVFB_PID)
-	- DISPLAY=:99 $(CB) $@ --repeat=$(ITERS) \
-		$(foreach browser, $(CHROME_TARGETS), \
-		--browser=$(browser))
-	kill `cat $(XVFB_PID)` && rm $(XVFB_PID)
-else
-$(BENCHMARKS):
-	$(CB) $@ --repeat=$(ITERS) \
-		$(foreach browser, $(CHROME_TARGETS), \
-		--browser=$(browser))
+RUNNER := xvfb-run -a $(RUNNER)
 endif
+
+$(BENCHMARKS):
+	$(RUNNER) $@ --env-validation=skip --repeat=$(ITERS) \
+		$(foreach browser, $(CHROME_TARGETS), \
+		--browser=$(browser))
 
 depot-tools:
 	git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -40,8 +36,6 @@ $(CHR_SRC):
 	mkdir chromium
 	cd chromium && fetch --no-history chromium
 	cd $@ && gclient runhooks
-
-build: $(NINJA_FILES) $(CHROME_TARGETS)
 
 ifeq ($(USE_REMOTEEXEC),true)
 $(CHR_SRC)/out/%/args.gn: $(PWD)/configs/%.gn
