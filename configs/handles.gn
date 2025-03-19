@@ -1,0 +1,5 @@
+is_debug=false
+dcheck_always_on=false
+is_component_build=true
+enable_nacl=false
+v8_enable_conservative_stack_scanning=false
