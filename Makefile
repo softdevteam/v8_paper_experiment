@@ -1,11 +1,13 @@
+PWD != pwd
+CHR_SRC = $(PWD)/chromium/src
+DT_SRC = $(PWD)/depot_tools
+RUNNER = $(CHR_SRC)/third_party/crossbench/cb.py
+
 export USE_REMOTEEXEC ?= false
 export ITERS ?= 10
 export USE_XVFB ?= true
-export PATH := $(PWD)/depot_tools:$(PATH)
+export PATH := $(DT_SRC):$(PATH)
 
-PWD != pwd
-CHR_SRC = $(PWD)/chromium/src
-RUNNER = $(CHR_SRC)/third_party/crossbench/cb.py
 ifeq ($(USE_XVFB),true)
 RUNNER := xvfb-run -a $(RUNNER)
 endif
@@ -71,12 +73,12 @@ $(NINJA_FILES): $(CFGS)
 $(CHROME_TARGETS): $(NINJA_FILES)
 	autoninja -C $(dir $@) chrome chromedriver
 
-$(CHR_SRC): depot_tools
+$(CHR_SRC): $(DT_SRC)
 	mkdir chromium
 	cd chromium && fetch --no-history chromium
 	cd $@ && gclient runhooks
 
-depot_tools:
+$(DT_SRC):
 	git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 
 clean-results:
@@ -86,8 +88,8 @@ clean-builds:
 	rm -rf $(CHR_SRC)/out
 
 clean: clean-confirm clean-builds
-	rm -rf $(PWD)/chromium
-	rm -rf $(PWD)/depot_tools
+	rm -rf $(CH_SRC)
+	rm -rf $(DT_SRC)
 
 clean-confirm:
 	@echo $@
