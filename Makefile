@@ -1,6 +1,6 @@
 export USE_REMOTEEXEC ?= false
-export USE_XVFB ?= false
 export ITERS ?= 10
+export USE_XVFB ?= true
 export PATH := $(PWD)/depot_tools:$(PATH)
 
 PWD != pwd
