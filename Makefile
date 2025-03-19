@@ -17,12 +17,11 @@ endif
 CFGS = $(wildcard $(PWD)/configs/*.gn)
 NINJA_FILES := $(patsubst $(PWD)/configs/%.gn,$(CHR_SRC)/out/%/args.gn,$(CFGS))
 CHROME_TARGETS := $(patsubst $(CHR_SRC)/out/%/args.gn,$(CHR_SRC)/out/%/chrome,$(NINJA_FILES))
-BENCHMARKS = speedometer2.1 jetstream3.0 motionmark1.3
 
-# BENCHMARKS = speedometer_2.1 jetstream_3.0 motionmark_1.3
-BENCHMARKS = speedometer_2.1
+BENCHMARKS = speedometer_2.1 jetstream_2.0 motionmark_1.3
 RESULTS = $(PWD)/results
-RAW = $(addprefix $(RESULTS)/rawdata/$(BENCHMARKS)/, $(addsuffix .json, $(BENCHMARKS)))
+RAW := $(addprefix $(RESULTS)/rawdata/, $(BENCHMARKS))
+RAW := $(addsuffix .json, $(RAW))
 PLOTS = $(addprefix $(RESULTS)/plots/, $(addsuffix .md, $(BENCHMARKS)))
 
 # Processing results into plots
@@ -57,8 +56,9 @@ $(PLOTS): $(RAW)
 
 bench: $(RAW)
 
-$(RAW): $(CHROME_TARGETS)
-	$(RUNNER) $(basename $(notdir $(RAW))) --env-validation=skip --repeat=$(ITERS) \
+$(RAW):
+	@echo $@
+	$(RUNNER) $(basename $(notdir $@)) --env-validation=skip --repeat=$(ITERS) \
 		$(foreach browser, $(CHROME_TARGETS), \
 		--browser=$(browser)) \
 		--out-dir=$(dir $@)
