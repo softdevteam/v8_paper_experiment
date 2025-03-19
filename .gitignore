@@ -1,3 +1,5 @@
 chromium/
 depot_tools/
 xvfb.pid
+results/
+venv/
