@@ -70,7 +70,19 @@ for binpath, results in zip(headers, data):
     merged[PRETTY_CFGS[cfg]] = results["display"]
 
 df = pd.DataFrame(merged)
-df = df.reset_index().rename(columns={"index": "Test Configuration"})
+df = df[
+    [
+        "Handles",
+        "Direct Refs.",
+        "Handles (w/o pointer compression)",
+        "Direct Refs. (w/o pointer compression)",
+    ]
+]
+df = df.reset_index()
+df = df.rename(columns={"index": "Test Configuration"})
 
 with open(outfile, "w") as f:
     f.write(df.to_markdown(floatfmt=".2f"))
+
+with open(Path(outfile).with_suffix(".html"), "w") as f:
+    f.write(df.to_html(index=False))
